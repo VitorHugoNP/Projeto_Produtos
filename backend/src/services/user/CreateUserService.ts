@@ -1,8 +1,32 @@
+import prismaClient from "../../routes";
+
+interface CreateUserProps {
+    name: string;
+    email: string;
+    password: string;
+}
 
 export class CreateUserService {
-    async execute(){
-        console.log("funcionando service");
+    async execute({ name, email, password }: CreateUserProps) {
 
-        return "usuario criado"
+        const userAlreadyExist = await prismaClient.user.findFirst({
+            where: {
+                email: email
+            }
+        })
+
+        if (userAlreadyExist) {
+            throw new Error("Usuário já existente!");
+        }
+
+        const user = await prismaClient.user.create({
+            data: {
+                name: name,
+                email: email,
+                password: password,
+            }
+        })
+
+        return user.name;
     }
 }

@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(router);
 
-const PORT = process.env.PORT! || 3334;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () =>{
     console.log("servidor rodando na porta " + PORT)
